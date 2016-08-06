@@ -1,6 +1,6 @@
-var sketchProc=function(processingInstance){ with (processingInstance){
-size(400, 400); 
-frameRate(60);
+//var sketchProc=function(processingInstance){ with //(processingInstance){
+//size(400, 400); 
+//frameRate(60);
 
 
 /////////////////////////////////////////////////////////
@@ -8,9 +8,12 @@ frameRate(60);
 //  Date: 9/12/2015
 //  Project 2
 
+var canvas = document.getElementById("Canvas2");
+var ctx = canvas.getContext("2d");
 
-var iceOBJ = function(x, y){
- 
+
+var IceOBJ = function (x, y) {
+    'use strict';
     this.x = x;
     this.y = y;
     
@@ -18,34 +21,32 @@ var iceOBJ = function(x, y){
     
 };
 
-var barOBJ = function(x){
-    
-    this.x = x;   
-    
+var BarOBJ = function (x) {
+    'use strict';
+    this.x = x;
 };
 
-var missileOBJ = function(x,y){
-    
+var MissileOBJ = function (x, y) {
+    'use strict';
     this.x = x;
     this.y = y;
     this.fire = false;
 };
 
-var brickOBJ = function(x,y){
-    
+var BrickOBJ = function (x, y) {
+    'use strict';
     this.y = y;
     this.x = x;
- 
     this.IsHit = false;
 };
 
-var ballOBJ = function(x,y){
- 
+var BallOBJ = function (x, y) {
+    'use strict';
     this.y = y;
     this.x = x;
     
-    this.xDir = round(random(1,2));
-    this.yDir = round(random(1,2));
+    this.xDir = Math.round(Math.random(1, 2));
+    this.yDir = Math.round(Math.random(1, 2));
     
 };
 
@@ -56,9 +57,9 @@ var score = 0;
 
 var GameOver = false;
 
-var bar = new barOBJ(160);
+var bar = new BarOBJ(160);
 
-var ball = new ballOBJ(20, 80);
+var ball = new BallOBJ(20, 80);
 
 var keyArray = [];
 
@@ -70,8 +71,10 @@ var missileIndex = 0;
 
 var missile = [];
 
-for (var i = 0; i < 5; i++){
-    missile[i] = new missileOBJ();
+var i;
+
+for (i = 0; i < 5; i = i + 1) {
+    missile[i] = new MissileOBJ();
 }
 
 
@@ -82,12 +85,14 @@ var brick = [];
 var x = 0;
 var y = 20;
 
-for (var i = 0; i < 4; i++){
-    for(var j = 0; j < 10; j++){
+var r;
+var r2;
+for (r = 0; r < 4; r = r + 1) {
+    for (r2 = 0; r2 < 10; r2 = r2 + 1) {
         
-        brick.push (new brickOBJ (x,y));
+        brick.push (new BrickOBJ(x, y));
         
-        x+=40;
+        x += 40;
     }
     x = 0;
     y += 10;
@@ -97,20 +102,20 @@ for (var i = 0; i < 4; i++){
 
 
 
-barOBJ.prototype.draw = function(){
-
-    fill (102, 102, 102);
+barOBJ.prototype.draw = function () {
+    
+    ctx.fill (102, 102, 102);
     
 
-    rect (this.x, 390, 80, 10);
-    rect (this.x+35, 375, 10, 30);
+    ctx.rect (this.x, 390, 80, 10);
+    ctx.rect (this.x+35, 375, 10, 30);
     
-    noStroke();
-    rect (this.x+20, 391, 40, 9);
-    stroke(0, 0, 0);
+    ctx.noStroke();
+    ctx.rect (this.x+20, 391, 40, 9);
+    ctx.stroke(0, 0, 0);
 };
 
-barOBJ.prototype.move = function(){
+barOBJ.prototype.move = function () {
   
     if (keyArray[LEFT] === 1){
      
@@ -120,7 +125,7 @@ barOBJ.prototype.move = function(){
         }
     }
     
-    if (keyArray[RIGHT] === 1){
+    if (keyArray[RIGHT] === 1) {
      
         if (this.x < 360){
             this.x+=2;
@@ -130,13 +135,13 @@ barOBJ.prototype.move = function(){
     
 };
 
-missileOBJ.prototype.draw = function() {
+missileOBJ.prototype.draw = function () {
     
-    fill (128, 128, 128);
+    ctx.fill (128, 128, 128);
     
     //noStroke();
-    triangle(this.x, this.y, this.x + 5, this.y, this.x + 2.5, this.y - 5);
-    rect(this.x, this.y, 5, 10);
+    ctx.triangle(this.x, this.y, this.x + 5, this.y, this.x + 2.5, this.y - 5);
+    ctx.rect(this.x, this.y, 5, 10);
     
     this.y -= 3;
     
@@ -164,32 +169,32 @@ missileOBJ.prototype.draw = function() {
     
 };
 
-var keyPressed = function(){
+var keyPressed = function () {
     
     keyArray[keyCode] = 1;   
     
 };
 
-var keyReleased = function(){
+var keyReleased = function () {
  
     keyArray[keyCode] = 0;   
     
 };
 
-brickOBJ.prototype.draw = function() {
+brickOBJ.prototype.draw = function () {
     
-    fill(130, 150, 237);
+    ctx.fill(130, 150, 237);
     
-    rect(this.x, this.y, 40, 10);
+    ctx.rect(this.x, this.y, 40, 10);
 
     
 };
 
-ballOBJ.prototype.draw = function(){
+ballOBJ.prototype.draw = function () {
     
-    fill (235, 236, 250);
+    ctx.fill (235, 236, 250);
     
-    rect (this.x, this.y, 10, 10);
+    ctx.rect (this.x, this.y, 10, 10);
     
     this.x += this.xDir;
     
@@ -218,14 +223,14 @@ ballOBJ.prototype.draw = function(){
     }
 };
 
-iceOBJ.prototype.draw = function(){
+iceOBJ.prototype.draw = function () {
   
   
     fill(255, 255, 255);
   
-    triangle(this.x, this.y, this.x + 10, this.y, this.x + 5, this.y + 20);
-    triangle(this.x + 10, this.y, this.x + 20, this.y, this.x + 15, this.y + 20);
-    triangle(this.x + 20, this.y, this.x + 30, this.y, this.x + 25, this.y + 20);
+    ctx.triangle(this.x, this.y, this.x + 10, this.y, this.x + 5, this.y + 20);
+    ctx.triangle(this.x + 10, this.y, this.x + 20, this.y, this.x + 15, this.y + 20);
+    ctx.triangle(this.x + 20, this.y, this.x + 30, this.y, this.x + 25, this.y + 20);
     
     this.y++;
     
@@ -239,7 +244,7 @@ iceOBJ.prototype.draw = function(){
     
 };
 
-var FireAway = function(){
+var FireAway = function () {
     
     if (keyArray[32] === 1){
         
@@ -258,11 +263,11 @@ var FireAway = function(){
     }
 };
 
-ballOBJ.prototype.CollisionCheck = function() {
+ballOBJ.prototype.CollisionCheck = function () {
     
     var ball = this;
     
-    var CollideCheckBrick = function(brick){
+    var CollideCheckBrick = function (brick) {
         
         var collision = false;
         
@@ -305,12 +310,12 @@ ballOBJ.prototype.CollisionCheck = function() {
 };
 
 
-var draw = function() {
+var draw = function () {
     
     if(GameOver === false){
     
     
-        background (32, 85, 217);
+        ctx.background (32, 85, 217);
     
         for (var i = 0; i < brick.length; i++){
         
