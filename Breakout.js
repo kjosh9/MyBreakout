@@ -90,7 +90,7 @@ var r2;
 for (r = 0; r < 4; r = r + 1) {
     for (r2 = 0; r2 < 10; r2 = r2 + 1) {
         
-        brick.push (new BrickOBJ(x, y));
+        brick.push(new BrickOBJ(x, y));
         
         x += 40;
     }
@@ -102,42 +102,48 @@ for (r = 0; r < 4; r = r + 1) {
 
 
 
-barOBJ.prototype.draw = function () {
+BarOBJ.prototype.draw = function () {
     
-    ctx.fill (102, 102, 102);
+    'use strict';
+    
+    ctx.fill(102, 102, 102);
     
 
-    ctx.rect (this.x, 390, 80, 10);
-    ctx.rect (this.x+35, 375, 10, 30);
+    ctx.rect(this.x, 390, 80, 10);
+    ctx.rect(this.x + 35, 375, 10, 30);
     
     ctx.noStroke();
-    ctx.rect (this.x+20, 391, 40, 9);
+    ctx.rect(this.x + 20, 391, 40, 9);
     ctx.stroke(0, 0, 0);
 };
 
-barOBJ.prototype.move = function () {
+BarOBJ.prototype.move = function () {
   
-    if (keyArray[LEFT] === 1){
+    'use strict';
+        
+    if (keyArray[37] === 1) {
      
-        if (this.x > -40){
+        if (this.x > -40) {
             
-            this.x-=2;   
+            this.x -= 2;
         }
     }
     
-    if (keyArray[RIGHT] === 1) {
+    if (keyArray[39] === 1) {
      
-        if (this.x < 360){
-            this.x+=2;
+        if (this.x < 360) {
+            this.x += 2;
         }
         
     }
     
 };
 
-missileOBJ.prototype.draw = function () {
+MissileOBJ.prototype.draw = function () {
     
-    ctx.fill (128, 128, 128);
+    'use strict';
+    
+    ctx.fill(128, 128, 128);
     
     //noStroke();
     ctx.triangle(this.x, this.y, this.x + 5, this.y, this.x + 2.5, this.y - 5);
@@ -145,23 +151,20 @@ missileOBJ.prototype.draw = function () {
     
     this.y -= 3;
     
-    if (this.y < 0){
+    if (this.y < 0) {
         this.fire = false;
     }
     
-    for (var i = 0; i < ice.length; i++){
-        if((this.x >= (ice[i].x)) && 
-        (this.x <= (ice[i].x + 30)) &&
-        (this.y >= (ice[i].y)) &&
-        (this.y <= ice[i].y + 20) &&
-        (ice[i].fall === true)){
+    var i;
+    
+    for (i = 0; i < ice.length; i = i + 1) {
+        if ((this.x >= (ice[i].x)) && (this.x <= (ice[i].x + 30)) && (this.y >= (ice[i].y)) && (this.y <= ice[i].y + 20) && (ice[i].fall === true)) {
             
             ice[i].fall = false;
         
             this.fire = false;
          
-            score += 5;   
-            
+            score += 5;
         }
     }
     
@@ -169,19 +172,22 @@ missileOBJ.prototype.draw = function () {
     
 };
 
-var keyPressed = function () {
+var keyPressed = function (e) {
+    'use strict';
     
-    keyArray[keyCode] = 1;   
-    
+    keyArray[e.keyCode] = 1;
 };
 
-var keyReleased = function () {
+var keyReleased = function (e) {
  
-    keyArray[keyCode] = 0;   
+    'use strict';
+    keyArray[e.keyCode] = 0;
     
 };
 
-brickOBJ.prototype.draw = function () {
+BrickOBJ.prototype.draw = function () {
+    
+    'use strict';
     
     ctx.fill(130, 150, 237);
     
@@ -190,55 +196,52 @@ brickOBJ.prototype.draw = function () {
     
 };
 
-ballOBJ.prototype.draw = function () {
+BallOBJ.prototype.draw = function () {
     
-    ctx.fill (235, 236, 250);
+    'use strict';
     
-    ctx.rect (this.x, this.y, 10, 10);
+    ctx.fill(235, 236, 250);
+    
+    ctx.rect(this.x, this.y, 10, 10);
     
     this.x += this.xDir;
     
     this.y += this.yDir;
     
-    if (this.x < 0){
-        this.xDir = round(2);   
-    }
-    else if (this.x > 390){
-        this.xDir = -round(2);
+    if (this.x < 0) {
+        this.xDir = Math.round(2);
+    } else if (this.x > 390) {
+        this.xDir = -Math.round(2);
     }
     
     if (this.y < 0) {
-        this.yDir = round(2);
-    }
-    else if (this.y > 380){
+        this.yDir = Math.round(2);
+    } else if (this.y > 380) {
         
-        if (dist(this.x, 0, bar.x + 40, 0) <= 40){
-            this.yDir = -round(2);
-        }
-        else {
-            
+        if (Math.dist(this.x, 0, bar.x + 40, 0) <= 40) {
+            this.yDir = -Math.round(2);
+        } else {
             GameOver = true;
-        
         }
     }
 };
 
-iceOBJ.prototype.draw = function () {
+IceOBJ.prototype.draw = function () {
   
-  
-    fill(255, 255, 255);
+    'use strict';
+    ctx.fill(255, 255, 255);
   
     ctx.triangle(this.x, this.y, this.x + 10, this.y, this.x + 5, this.y + 20);
     ctx.triangle(this.x + 10, this.y, this.x + 20, this.y, this.x + 15, this.y + 20);
     ctx.triangle(this.x + 20, this.y, this.x + 30, this.y, this.x + 25, this.y + 20);
     
-    this.y++;
+    this.y = this.y + 1;
     
-    if(this.y > 400){
+    if (this.y > 400) {
         this.fall = false;
     }
     
-    if(this.y > 390){
+    if (this.y > 390) {
         GameOver = true;
     }
     
@@ -246,16 +249,17 @@ iceOBJ.prototype.draw = function () {
 
 var FireAway = function () {
     
-    if (keyArray[32] === 1){
+    'use strict';
+    if (keyArray[32] === 1) {
         
-        if (currFrameCount < (frameCount - 10)){
+        if (currFrameCount < (frameCount - 10)) {
             currFrameCount = frameCount;
             missile[missileIndex].fire = true;
             missile[missileIndex].x = bar.x + 40;
             missile[missileIndex].y = 390;
-            missileIndex++;
+            missileIndex = missileIndex + 1;
             
-            if (missileIndex > missile.length- 1 ){
+            if (missileIndex > missile.length - 1) {
                 
                 missileIndex = 0;
             }
@@ -263,46 +267,42 @@ var FireAway = function () {
     }
 };
 
-ballOBJ.prototype.CollisionCheck = function () {
+BallOBJ.prototype.CollisionCheck = function () {
     
-    var ball = this;
+    'use strict';
     
-    var CollideCheckBrick = function (brick) {
+    var ball = this, brickHit = false, l, CollideCheckBrick = function (brick) {
         
         var collision = false;
         
-        if ((ball.x > brick.x) && (ball.x < (brick.x + 40)) && (ball.y > brick.y) && (ball.y < (brick.y+10))){
-           collision = true;
-        }
+        if ((ball.x > brick.x) && (ball.x < (brick.x + 40)) && (ball.y > brick.y) && (ball.y < (brick.y + 10))) { collision = true; }
         
-        if (((ball.x+10) > brick.x) && ((ball.x+10) < (brick.x + 40)) && (ball.y > brick.y) && (ball.y < (brick.y+10))){
+        if (((ball.x + 10) > brick.x) && ((ball.x + 10) < (brick.x + 40)) && (ball.y > brick.y) && (ball.y < (brick.y + 10))) {
             collision = true;
         }
         
-        if ((ball.x > brick.x) && (ball.x < (brick.x + 10)) && ((ball.y+10) > brick.y) && ((ball.y+10) < (brick.y+10))){
+        if ((ball.x > brick.x) && (ball.x < (brick.x + 10)) && ((ball.y + 10) > brick.y) && ((ball.y + 10) < (brick.y + 10))) {
             collision = true;
         }
            
-        if (((ball.x+10) > brick.x) && ((ball.x+10) < (brick.x + 40)) && ((ball.y+10) > brick.y) && ((ball.y+10) < (brick.y+10))){
-             collision = true;   
+        if (((ball.x + 10) > brick.x) && ((ball.x + 10) < (brick.x + 40)) && ((ball.y + 10) > brick.y) && ((ball.y + 10) < (brick.y + 10))) {
+            collision = true;
         }
             
         return (collision);
     };
     
-	var brickHit = false;
-	
-	for(var i = 0; (i < brick.length) && (brickHit === false); i++) {
+	for (l = 0; (l < brick.length) && (brickHit === false); l = l + 1) {
 
         if (brick[i].IsHit === false) {
 
-            if (CollideCheckBrick(brick[i]) === true){
-                    brick[i].IsHit = true;
-		            brickHit = true;
-                    this.yDir = -this.yDir;
-                    score++;
+            if (new CollideCheckBrick(brick[i]) === true) {
+                brick[i].IsHit = true;
+		        brickHit = true;
+                this.yDir = -this.yDir;
+                score = score + 1;
                     
-                   ice.push(new iceOBJ(brick[i].x+5, brick[i].y));
+                ice.push(new IceOBJ(brick[i].x + 5, brick[i].y));
                 
             }
         }
@@ -312,14 +312,16 @@ ballOBJ.prototype.CollisionCheck = function () {
 
 var draw = function () {
     
-    if(GameOver === false){
+    'use strict';
+    if (GameOver === false) {
     
     
-        ctx.background (32, 85, 217);
-    
-        for (var i = 0; i < brick.length; i++){
+        ctx.background(32, 85, 217);
         
-            if (brick[i].IsHit === false ){
+        var i2, i3;
+        for (i2 = 0; i2 < brick.length; i2 = i2 + 1) {
+        
+            if (brick[i].IsHit === false) {
                 brick[i].draw();
             }
         }
@@ -329,42 +331,41 @@ var draw = function () {
         ball.draw();
         ball.CollisionCheck();
         
-        for (i = 0; i < ice.length; i++){
+        
+        for (i2 = 0; i2 < ice.length; i2 = i2 + 1) {
             
-            if (ice[i].fall === true){
-            ice[i].draw();
+            if (ice[i].fall === true) {
+                ice[i].draw();
             }
         }
         
         
-        FireAway();
+        //FireAway();
         
-        for( i = 0; i < missile.length; i++){
+        for (i3 = 0; i3 < missile.length; i3 = i3 + 1) {
             
-            if (missile[i].fire === true){
+            if (missile[i].fire === true) {
                 
                 missile[i].draw();
             }
         }
         
-        fill (255, 255, 255);
+        ctx.fill(255, 255, 255);
         
-        textSize (20);
+        ctx.textSize(20);
         
-        text (score, 360, 20);
+        ctx.text(score, 360, 20);
     
-    }
-    
-    else {
+    } else {
         
-        fill (255, 255, 255);
+        ctx.fill(255, 255, 255);
         
-        textSize (50);
+        ctx.textSize(50);
+            
+        ctx.text("Game Over!", 70, 200);
         
-        text("Game Over!", 70, 200);
-        
-        textSize (30);
-        text("Final Score:", 100, 250); 
-        text(score, 280, 250);
+        ctx.textSize(30);
+        ctx.text("Final Score:", 100, 250);
+        ctx.text(score, 280, 250);
     }
 };
